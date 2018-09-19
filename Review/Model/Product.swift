@@ -19,8 +19,7 @@ class Product : NSObject , NSCoding{
         self.imageUrl = aDecoder.decodeObject(forKey: "imageUrl") as? String
         self.fav = aDecoder.decodeObject(forKey: "fav") as? Bool
     }
-    
-    
+
     var id:String?
     var name:String?
     var desc:String?

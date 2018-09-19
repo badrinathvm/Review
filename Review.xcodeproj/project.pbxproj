@@ -9,6 +9,13 @@
 /* Begin PBXBuildFile section */
 		05392F9C2151593300877FFD /* Pods_Review.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 05392F9B2151593300877FFD /* Pods_Review.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		05392F9F215210FE00877FFD /* ProductViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05392F9E215210FE00877FFD /* ProductViewModel.swift */; };
+		05392FA12152AAB700877FFD /* DynamicValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05392FA02152AAB700877FFD /* DynamicValue.swift */; };
+		05392FAB2152C22500877FFD /* RequestService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05392FA32152C22400877FFD /* RequestService.swift */; };
+		05392FAC2152C22500877FFD /* RequestHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05392FA42152C22400877FFD /* RequestHandler.swift */; };
+		05392FAD2152C22500877FFD /* RequestFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05392FA52152C22400877FFD /* RequestFactory.swift */; };
+		05392FAE2152C22500877FFD /* ParserHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05392FA72152C22500877FFD /* ParserHelper.swift */; };
+		05392FAF2152C22500877FFD /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05392FA92152C22500877FFD /* Result.swift */; };
+		05392FB02152C22500877FFD /* ErrorResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05392FAA2152C22500877FFD /* ErrorResult.swift */; };
 		05862724214D741A0054E228 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05862723214D741A0054E228 /* AppDelegate.swift */; };
 		05862726214D741A0054E228 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05862725214D741A0054E228 /* ViewController.swift */; };
 		05862729214D741A0054E228 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 05862727214D741A0054E228 /* Main.storyboard */; };
@@ -52,6 +59,13 @@
 /* Begin PBXFileReference section */
 		05392F9B2151593300877FFD /* Pods_Review.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Pods_Review.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		05392F9E215210FE00877FFD /* ProductViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductViewModel.swift; sourceTree = "<group>"; };
+		05392FA02152AAB700877FFD /* DynamicValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicValue.swift; sourceTree = "<group>"; };
+		05392FA32152C22400877FFD /* RequestService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestService.swift; sourceTree = "<group>"; };
+		05392FA42152C22400877FFD /* RequestHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestHandler.swift; sourceTree = "<group>"; };
+		05392FA52152C22400877FFD /* RequestFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestFactory.swift; sourceTree = "<group>"; };
+		05392FA72152C22500877FFD /* ParserHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParserHelper.swift; sourceTree = "<group>"; };
+		05392FA92152C22500877FFD /* Result.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
+		05392FAA2152C22500877FFD /* ErrorResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorResult.swift; sourceTree = "<group>"; };
 		05862720214D741A0054E228 /* Review.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Review.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		05862723214D741A0054E228 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		05862725214D741A0054E228 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -125,6 +139,33 @@
 				05392F9E215210FE00877FFD /* ProductViewModel.swift */,
 			);
 			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		05392FA22152C22400877FFD /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				05392FA32152C22400877FFD /* RequestService.swift */,
+				05392FA42152C22400877FFD /* RequestHandler.swift */,
+				05392FA52152C22400877FFD /* RequestFactory.swift */,
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
+		05392FA62152C22500877FFD /* Parser */ = {
+			isa = PBXGroup;
+			children = (
+				05392FA72152C22500877FFD /* ParserHelper.swift */,
+			);
+			path = Parser;
+			sourceTree = "<group>";
+		};
+		05392FA82152C22500877FFD /* Result */ = {
+			isa = PBXGroup;
+			children = (
+				05392FA92152C22500877FFD /* Result.swift */,
+				05392FAA2152C22500877FFD /* ErrorResult.swift */,
+			);
+			path = Result;
 			sourceTree = "<group>";
 		};
 		05862717214D741A0054E228 = {
@@ -217,6 +258,7 @@
 			isa = PBXGroup;
 			children = (
 				0586275B214D795D0054E228 /* Product.swift */,
+				05392FA02152AAB700877FFD /* DynamicValue.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -224,6 +266,9 @@
 		0586275D214D7B200054E228 /* Service */ = {
 			isa = PBXGroup;
 			children = (
+				05392FA22152C22400877FFD /* Network */,
+				05392FA62152C22500877FFD /* Parser */,
+				05392FA82152C22500877FFD /* Result */,
 				0586275E214D7B2E0054E228 /* API.swift */,
 			);
 			path = Service;
@@ -480,12 +525,19 @@
 			buildActionMask = 2147483647;
 			files = (
 				05862726214D741A0054E228 /* ViewController.swift in Sources */,
+				05392FAB2152C22500877FFD /* RequestService.swift in Sources */,
+				05392FA12152AAB700877FFD /* DynamicValue.swift in Sources */,
 				05862753214D74AB0054E228 /* ProductListViewController.swift in Sources */,
 				05862724214D741A0054E228 /* AppDelegate.swift in Sources */,
 				05862759214D78410054E228 /* ProductViewCell.swift in Sources */,
+				05392FAF2152C22500877FFD /* Result.swift in Sources */,
 				05392F9F215210FE00877FFD /* ProductViewModel.swift in Sources */,
+				05392FAC2152C22500877FFD /* RequestHandler.swift in Sources */,
 				05862756214D76A60054E228 /* Extensions.swift in Sources */,
 				05862761214D86780054E228 /* ProductDetailViewController.swift in Sources */,
+				05392FB02152C22500877FFD /* ErrorResult.swift in Sources */,
+				05392FAD2152C22500877FFD /* RequestFactory.swift in Sources */,
+				05392FAE2152C22500877FFD /* ParserHelper.swift in Sources */,
 				0586275C214D795D0054E228 /* Product.swift in Sources */,
 				0586275F214D7B2E0054E228 /* API.swift in Sources */,
 				05862763214D889B0054E228 /* ProductDetailView.swift in Sources */,
