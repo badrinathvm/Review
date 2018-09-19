@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		05392F9C2151593300877FFD /* Pods_Review.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 05392F9B2151593300877FFD /* Pods_Review.framework */; settings = {ATTRIBUTES = (Required, ); }; };
+		05392F9F215210FE00877FFD /* ProductViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05392F9E215210FE00877FFD /* ProductViewModel.swift */; };
 		05862724214D741A0054E228 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05862723214D741A0054E228 /* AppDelegate.swift */; };
 		05862726214D741A0054E228 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05862725214D741A0054E228 /* ViewController.swift */; };
 		05862729214D741A0054E228 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 05862727214D741A0054E228 /* Main.storyboard */; };
@@ -50,6 +51,7 @@
 
 /* Begin PBXFileReference section */
 		05392F9B2151593300877FFD /* Pods_Review.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Pods_Review.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		05392F9E215210FE00877FFD /* ProductViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductViewModel.swift; sourceTree = "<group>"; };
 		05862720214D741A0054E228 /* Review.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Review.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		05862723214D741A0054E228 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		05862725214D741A0054E228 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -117,6 +119,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		05392F9D215210DE00877FFD /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				05392F9E215210FE00877FFD /* ProductViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
 		05862717214D741A0054E228 = {
 			isa = PBXGroup;
 			children = (
@@ -142,6 +152,7 @@
 		05862722214D741A0054E228 /* Review */ = {
 			isa = PBXGroup;
 			children = (
+				05392F9D215210DE00877FFD /* ViewModel */,
 				05862764214D92FF0054E228 /* Resources */,
 				0586275D214D7B200054E228 /* Service */,
 				0586275A214D794E0054E228 /* Model */,
@@ -472,6 +483,7 @@
 				05862753214D74AB0054E228 /* ProductListViewController.swift in Sources */,
 				05862724214D741A0054E228 /* AppDelegate.swift in Sources */,
 				05862759214D78410054E228 /* ProductViewCell.swift in Sources */,
+				05392F9F215210FE00877FFD /* ProductViewModel.swift in Sources */,
 				05862756214D76A60054E228 /* Extensions.swift in Sources */,
 				05862761214D86780054E228 /* ProductDetailViewController.swift in Sources */,
 				0586275C214D795D0054E228 /* Product.swift in Sources */,

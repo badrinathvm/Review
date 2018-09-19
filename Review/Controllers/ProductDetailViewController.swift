@@ -13,14 +13,17 @@ class ProductDetailViewController: UIViewController {
     var product: Product?
     
     lazy var productView:ProductDetailView = {
-        var productView = ProductDetailView(product: product)
+        var productView = ProductDetailView()
         return productView
     }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        let productViewModel = ProductViewModel(product: product!)
+        
+        productViewModel.configure(productView)
+        
         self.view.addSubview(productView)
-        // Do any additional setup after loading the view.
     }
 }

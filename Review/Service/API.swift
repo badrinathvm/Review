@@ -61,8 +61,8 @@ class API {
                 print(thumbailUrl)
                 print(imageUrl)
                 
-                let productData = Product(id: productId, name: name, desc: description, price: price, thumbailUrl: thumbailUrl, imageUrl: imageUrl)
-               productModel.append(productData)
+                let product = Product(id: productId, name: name, desc: description, price: price, thumbailUrl: thumbailUrl, imageUrl: imageUrl)
+                productModel.append(product)
 
            })
             

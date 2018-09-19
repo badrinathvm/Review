@@ -46,21 +46,21 @@ class ProductDetailView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    init(product: Product? = nil){
+    init(){
         super.init(frame: .zero)
     
         [productImage,name,price,descText].forEach  {
             addSubview($0)
         }
         
-        guard let product = product,
-            let price = product.price,
-            let imageUrl = product.imageUrl else { return }
-        
-        self.name.text = product.name
-        self.price.text = "$\(price/100)"
-        self.descText.text = product.desc
-        self.productImage.loadImage(url: imageUrl)
+//        guard let product = product,
+//            let price = product.price,
+//            let imageUrl = product.imageUrl else { return }
+//        
+//        self.name.text = product.name
+//        self.price.text = "$\(price/100)"
+//        self.descText.text = product.desc
+//        self.productImage.loadImage(url: imageUrl)
         
         setupConstraints()
     }

@@ -52,7 +52,11 @@ extension ProductListViewController : UITableViewDelegate, UITableViewDataSource
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
       
         let cell = ProductViewCell(style: UITableViewCell.CellStyle.default, reuseIdentifier: cellIdentifier)
-        cell.product = productData[indexPath.row]
+        
+        let productViewModel = ProductViewModel(product: productData[indexPath.row])
+        productViewModel.configure(cell)
+        
+        //cell.product = productData[indexPath.row]
         
         //MARK : Handling fav image updates.
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(ProductListViewController.favTapped(_:)))
