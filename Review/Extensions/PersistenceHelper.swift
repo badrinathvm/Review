@@ -8,23 +8,18 @@
 
 import Foundation
 
-protocol PersistenceDelegate: class {
-    func updateCache(productList: [Product])
-    func getProductList() -> [Product]
-}
-
 class PersistenceHelper {
     
-    weak var delegate:PersistenceDelegate?
+    static let shared = PersistenceHelper()
     
     let defaults = UserDefaults.standard
 
     func updateCache(for products: [Product]) {
-        delegate?.updateCache(productList: products)
+       updateUserDefaults(for: products)
     }
     
     func fetchProductsFromCache() -> [Product] {
-        guard let products = delegate?.getProductList() else { return [] }
+        let products = fetchFromUserDefaults()
         return products
     }
     

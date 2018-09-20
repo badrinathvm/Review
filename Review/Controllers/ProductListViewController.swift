@@ -12,13 +12,17 @@ class ProductListViewController: UIViewController {
 
     fileprivate let cellIdentifier = "productCell"
 
-    var productData: [Product] = []
-
     lazy var productModal: ProductModal = { [unowned self] in
         let modal = ProductModal()
         modal.delegate = self
         return modal
     }()
+    
+    lazy var productDetailView: ProductDetailView = { [unowned self] in
+        let productDetailView = ProductDetailView()
+        productDetailView.delegate = self
+        return productDetailView
+        }()
 
     lazy var filterOrDisable: UIBarButtonItem = { [unowned self] in
         let barButton = UIBarButtonItem(title: "Filter", style: .plain, target: self, action: #selector(filterTapped))
@@ -33,13 +37,6 @@ class ProductListViewController: UIViewController {
         tableView.delegate = self
         return tableView
     }()
-
-    lazy var persistenceHelper: PersistenceHelper = { [unowned self] in
-        let persistenceHelper = PersistenceHelper()
-        persistenceHelper.delegate = self
-        return persistenceHelper
-    }()
-
 
     override func viewDidLoad() {
 
@@ -77,26 +74,10 @@ extension ProductListViewController: UITableViewDelegate, UITableViewDataSource 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print("Selected Row is \(indexPath.row)")
         tableView.deselectRow(at: indexPath, animated: true)
-        let product = productData[indexPath.row]
-        navigateToProductDetails(with: product)
+        let product = productModal.productData[indexPath.row]
+        productDetailView.delegate?.navigateToProductDetails(product: product)
     }
 }
-
-//MARK : NSUserDefaults updates and fav img updates.
-
-extension ProductListViewController: PersistenceDelegate {
-
-    //updates the product list
-    func updateCache(productList: [Product]) {
-        persistenceHelper.updateUserDefaults(for: productList)
-    }
-
-    //Return the list for products.
-    func getProductList () -> [Product] {
-        return persistenceHelper.fetchFromUserDefaults()
-    }
-}
-
 
 extension ProductListViewController: ProductTableViewCellDelegate {
 
@@ -104,7 +85,7 @@ extension ProductListViewController: ProductTableViewCellDelegate {
 
         guard let tappedIndexPath = tableView.indexPath(for: sender) else { return }
         let favCell = self.tableView.cellForRow(at: tappedIndexPath) as? ProductTableViewCell
-        let productList = persistenceHelper.fetchProductsFromCache()
+        let productList = PersistenceHelper.shared.fetchProductsFromCache()
         let product = productList[tappedIndexPath.row]
         guard let productFav = product.fav else { return }
 
@@ -115,7 +96,8 @@ extension ProductListViewController: ProductTableViewCellDelegate {
             favCell?.favImg.image = UIImage(named: "filled.png")
             product.fav = true
         }
-        persistenceHelper.updateCache(for: productList)
+        
+        PersistenceHelper.shared.updateCache(for: productList)
     }
 }
 
@@ -141,15 +123,8 @@ extension ProductListViewController {
         navigationItem.rightBarButtonItem = filterOrDisable
     }
 
-    func navigateToProductDetails(with product: Product) {
-        guard let productDetailsVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ProductDetailViewController") as? ProductDetailViewController else { return }
-        productDetailsVC.product = product
-        self.navigationController?.navigationBar.backItem?.title = NSLocalizedString("Product Details", comment: "Product Details ")
-        self.navigationController?.pushViewController(productDetailsVC, animated: true)
-    }
-
     @objc func filterTapped() {
-        let productList = persistenceHelper.fetchProductsFromCache()
+        let productList = PersistenceHelper.shared.fetchProductsFromCache()
         if filterOrDisable.title == "Filter" {
             filterOrDisable.title = "Disable"
             self.productModal.productData = productList.filter { $0.fav == true }
@@ -157,5 +132,15 @@ extension ProductListViewController {
             filterOrDisable.title = "Filter"
             self.productModal.productData = productList
         }
+    }
+}
+
+extension ProductListViewController: ProductDetailViewDelegate {
+    
+    func navigateToProductDetails(product: Product) {
+        guard let productDetailsVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ProductDetailViewController") as? ProductDetailViewController else { return }
+        productDetailsVC.product = product
+        self.navigationController?.navigationBar.backItem?.title = NSLocalizedString("Product Details", comment: "Product Details ")
+        self.navigationController?.pushViewController(productDetailsVC, animated: true)
     }
 }

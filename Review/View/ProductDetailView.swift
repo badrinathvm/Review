@@ -8,7 +8,14 @@
 
 import UIKit
 
+
+protocol ProductDetailViewDelegate: class  {
+    func navigateToProductDetails(product: Product)
+}
+
 class ProductDetailView: UIView {
+    
+    weak var delegate:ProductDetailViewDelegate?
 
     let productImage:UIImageView = {
         let img = UIImageView()
