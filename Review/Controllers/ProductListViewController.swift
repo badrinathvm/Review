@@ -88,6 +88,7 @@ extension ProductListViewController : UITableViewDelegate, UITableViewDataSource
 }
 
 //MARK : NSUserDefaults updates and fav img updates.
+
 extension ProductListViewController: PersistenceDelegate {
     
     //updates the product list
@@ -103,23 +104,22 @@ extension ProductListViewController: PersistenceDelegate {
 
 
 extension ProductListViewController: ProductTableViewCellDelegate {
-    
-    func didTapFav(_ sender: ProductTableViewCell) {
+
+    func didTapFavorite(_ sender: ProductTableViewCell) {
         
         guard let tappedIndexPath = tableView.indexPath(for: sender) else { return }
-        let index = tappedIndexPath.row
         let favCell = self.tableView.cellForRow(at: tappedIndexPath) as? ProductTableViewCell
         let productList = persistenceHelper.fetchProductsFromCache()
-        guard let productFav = productList[index].fav else { return }
+        let product = productList[tappedIndexPath.row]
+        guard let productFav = product.fav else { return }
         
         if productFav {
             favCell?.favImg.image = UIImage(named: "outline.png")
-            productList[index].fav = false
+            product.fav = false
         }else{
             favCell?.favImg.image = UIImage(named: "filled.png")
-            productList[index].fav = true
+            product.fav = true
         }
-        
         persistenceHelper.updateCache(for: productList)
     }
 }

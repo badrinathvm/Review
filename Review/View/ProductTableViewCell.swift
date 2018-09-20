@@ -11,7 +11,7 @@ import UIKit
 
 
 protocol ProductTableViewCellDelegate:class {
-    func didTapFav(_ sender: ProductTableViewCell)
+    func didTapFavorite(_ sender: ProductTableViewCell)
 }
 
 class ProductTableViewCell : UITableViewCell {
@@ -93,7 +93,7 @@ class ProductTableViewCell : UITableViewCell {
     var produtListViewController: ProductListViewController?
     
     @objc func favTapped() {
-        delegate?.didTapFav(self)
+        delegate?.didTapFavorite(self)
     }
     
     func setup() {
