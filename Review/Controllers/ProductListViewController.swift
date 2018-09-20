@@ -14,8 +14,12 @@ class ProductListViewController: UIViewController {
 
     var productData:[Product] = []
     
-    var filterOrDisable:UIBarButtonItem?
-    let defaults = UserDefaults.standard
+    //let defaults = UserDefaults.standard
+    
+    lazy var filterOrDisable: UIBarButtonItem = { [unowned self] in
+        let barButton = UIBarButtonItem(title: "Filter", style: .plain, target: self, action: #selector(filterTapped))
+        return barButton
+    }()
     
     lazy var tableView: UITableView = { [unowned self] in
         let tableView = UITableView()
@@ -42,16 +46,16 @@ class ProductListViewController: UIViewController {
         API.getProductData { (result) in
             
             //Assign the result , if products are not available in NSUserDefaults
-            guard let _ = self.defaults.object(forKey: "starred") as? NSData else {
+            guard let _ = self.persistenceHelper.defaults.object(forKey: "starred") as? NSData else {
                 self.productData = result
                 let data = NSKeyedArchiver.archivedData(withRootObject: self.productData)
-                self.defaults.set(data, forKey: "starred")
+                self.persistenceHelper.defaults.set(data, forKey: "starred")
                 self.tableView.reloadData()
                 return
             }
             
              //if products are available in NSUSerDefaults, assing it to the productData Array to populate
-            self.productData = self.getProductList()
+            self.productData = self.persistenceHelper.fetchProducts()
             self.tableView.reloadData()
         }
     }
@@ -92,13 +96,13 @@ extension ProductListViewController: PersistenceDelegate {
     //MARK : this methos updates the product List
     func updateCache(productList: [Product]) {
         let data = NSKeyedArchiver.archivedData(withRootObject: productList)
-        self.defaults.set(data, forKey: "starred")
+        self.persistenceHelper.defaults.set(data, forKey: "starred")
     }
     
     //MARK : Return the productList
     func getProductList ()  -> [Product] {
         
-        guard let data = defaults.object(forKey: "starred") as? NSData else { return [] }
+        guard let data = self.persistenceHelper.defaults.object(forKey: "starred") as? NSData else { return [] }
         
         guard let productList = NSKeyedUnarchiver.unarchiveObject(with: data as Data) as? [Product] else  { return [] }
         
@@ -114,7 +118,7 @@ extension ProductListViewController: ProductTableViewCellDelegate {
         guard let tappedIndexPath = tableView.indexPath(for: sender) else { return }
         let index = tappedIndexPath.row
         let favCell = self.tableView.cellForRow(at: tappedIndexPath) as? ProductTableViewCell
-        let productList = getProductList()
+        let productList = persistenceHelper.fetchProducts()
         guard let productFav = productList[index].fav else { return }
         
         if productFav {
@@ -142,8 +146,7 @@ extension ProductListViewController {
     }
     
     func setupNavItems() {
-        filterOrDisable = UIBarButtonItem(title: "Filter", style: .plain, target: self, action: #selector(filterTapped))
-        navigationItem.rightBarButtonItems = [filterOrDisable] as? [UIBarButtonItem]
+        navigationItem.rightBarButtonItem = filterOrDisable
     }
     
     func navigateToProductDetails(with product: Product) {
@@ -155,15 +158,15 @@ extension ProductListViewController {
     
     @objc func filterTapped() {
         
-        let productList = getProductList()
+        let productList = persistenceHelper.fetchProducts()
         
-        if filterOrDisable?.title == "Filter" {
-            filterOrDisable?.title = "Disable"
+        if filterOrDisable.title == "Filter" {
+            filterOrDisable.title = "Disable"
             
             //filters the product only with favourited
             self.productData = productList.filter{ $0.fav == true }
         }else {
-            filterOrDisable?.title = "Filter"
+            filterOrDisable.title = "Filter"
             //assigns all the products when disabled to show all of them
             self.productData = productList
         }
