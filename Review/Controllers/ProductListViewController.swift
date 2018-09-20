@@ -14,8 +14,6 @@ class ProductListViewController: UIViewController {
 
     var productData:[Product] = []
     
-    //let defaults = UserDefaults.standard
-    
     lazy var filterOrDisable: UIBarButtonItem = { [unowned self] in
         let barButton = UIBarButtonItem(title: "Filter", style: .plain, target: self, action: #selector(filterTapped))
         return barButton
@@ -48,14 +46,13 @@ class ProductListViewController: UIViewController {
             //Assign the result , if products are not available in NSUserDefaults
             guard let _ = self.persistenceHelper.defaults.object(forKey: "starred") as? NSData else {
                 self.productData = result
-                let data = NSKeyedArchiver.archivedData(withRootObject: self.productData)
-                self.persistenceHelper.defaults.set(data, forKey: "starred")
+                self.persistenceHelper.updateUserDefaults(for: self.productData)
                 self.tableView.reloadData()
                 return
             }
             
              //if products are available in NSUSerDefaults, assing it to the productData Array to populate
-            self.productData = self.persistenceHelper.fetchProducts()
+            self.productData = self.persistenceHelper.fetchProductsFromCache()
             self.tableView.reloadData()
         }
     }
@@ -93,20 +90,14 @@ extension ProductListViewController : UITableViewDelegate, UITableViewDataSource
 //MARK : NSUserDefaults updates and fav img updates.
 extension ProductListViewController: PersistenceDelegate {
     
-    //MARK : this methos updates the product List
+    //updates the product list
     func updateCache(productList: [Product]) {
-        let data = NSKeyedArchiver.archivedData(withRootObject: productList)
-        self.persistenceHelper.defaults.set(data, forKey: "starred")
+        persistenceHelper.updateUserDefaults(for: productList)
     }
     
-    //MARK : Return the productList
+    //Return the list for products.
     func getProductList ()  -> [Product] {
-        
-        guard let data = self.persistenceHelper.defaults.object(forKey: "starred") as? NSData else { return [] }
-        
-        guard let productList = NSKeyedUnarchiver.unarchiveObject(with: data as Data) as? [Product] else  { return [] }
-        
-        return productList
+        return persistenceHelper.fetchFromUserDefaults()
     }
 }
 
@@ -118,7 +109,7 @@ extension ProductListViewController: ProductTableViewCellDelegate {
         guard let tappedIndexPath = tableView.indexPath(for: sender) else { return }
         let index = tappedIndexPath.row
         let favCell = self.tableView.cellForRow(at: tappedIndexPath) as? ProductTableViewCell
-        let productList = persistenceHelper.fetchProducts()
+        let productList = persistenceHelper.fetchProductsFromCache()
         guard let productFav = productList[index].fav else { return }
         
         if productFav {
@@ -158,7 +149,7 @@ extension ProductListViewController {
     
     @objc func filterTapped() {
         
-        let productList = persistenceHelper.fetchProducts()
+        let productList = persistenceHelper.fetchProductsFromCache()
         
         if filterOrDisable.title == "Filter" {
             filterOrDisable.title = "Disable"
