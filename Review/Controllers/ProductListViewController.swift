@@ -42,27 +42,14 @@ class ProductListViewController: UIViewController {
     
     
     override func viewDidLoad() {
+        
         super.viewDidLoad()
         
         setupTableView()
         
         setupNavItems()
-        
-        //Observe the model for the changes.
-        //observeModel()
-        
-        API.getProductData { (result) in
-            
-            //Assign the result , if products are not available in NSUserDefaults
-            guard let _ = self.persistenceHelper.defaults.object(forKey: "starred") as? NSData else {
-                self.productModal.productData = result
-                self.persistenceHelper.updateUserDefaults(for: self.productModal.productData)
-                return
-            }
-            
-             //if products are available in NSUSerDefaults, assing it to the productData Array to populate
-            self.productModal.productData = self.persistenceHelper.fetchProductsFromCache()
-        }
+
+        productModal.fetchProductData()
     }
 }
 

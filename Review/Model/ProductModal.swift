@@ -20,6 +20,11 @@ class ProductModal : NSObject {
     
     var observers = [NSKeyValueObservation]()
     
+    lazy var persistenceHelper: PersistenceHelper = { [unowned self] in
+        let persistenceHelper = PersistenceHelper()
+        return persistenceHelper
+    }()
+    
     override init() {
         super.init()
         observeModel()
@@ -31,5 +36,21 @@ class ProductModal : NSObject {
                 self?.delegate?.reloadTableView()
             }
         ]
+    }
+    
+    func fetchProductData() {
+        
+        API.getProductData { (result) in
+            
+            //Assign the result , if products are not available in NSUserDefaults
+            guard let _ = self.persistenceHelper.defaults.object(forKey: "starred") as? NSData else {
+                self.productData = result
+                self.persistenceHelper.updateUserDefaults(for: self.productData)
+                return
+            }
+            
+            //if products are available in NSUSerDefaults, assing it to the productData Array to populate
+            self.productData = self.persistenceHelper.fetchProductsFromCache()
+        }
     }
 }
