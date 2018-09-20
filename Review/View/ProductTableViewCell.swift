@@ -9,7 +9,14 @@
 import Foundation
 import UIKit
 
-class ProductViewCell : UITableViewCell {
+
+protocol ProductTableViewCellDelegate:class {
+    func didTapFav(_ sender: ProductTableViewCell)
+}
+
+class ProductTableViewCell : UITableViewCell {
+    
+    weak var delegate: ProductTableViewCellDelegate?
     
     var product: Product? {
         didSet{
@@ -19,6 +26,13 @@ class ProductViewCell : UITableViewCell {
             self.name.text = product.name
             self.price.text = "$\(price/100)"
             self.productImage.loadImage(url: thumbnailUrl)
+            
+            guard let favFlag = product.fav else  { return }
+            if favFlag {
+                self.favImg.image = UIImage(named: "filled.png")
+            }else{
+                self.favImg.image = UIImage(named: "outline.png")
+            }
         }
     }
     
@@ -76,12 +90,21 @@ class ProductViewCell : UITableViewCell {
     }()
     
     
+    var produtListViewController: ProductListViewController?
+    
+    @objc func favTapped() {
+        delegate?.didTapFav(self)
+    }
+    
     func setup() {
         addSubview(containerView)
         
         [productImage,name,price,favImg ].forEach {
             containerView.addSubview($0)
         }
+        
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(favTapped))
+        favImg.addGestureRecognizer(tapGestureRecognizer)
         
         containerView.anchor(top: topAnchor, leading: leadingAnchor, bottom: bottomAnchor, trailing: trailingAnchor,padding: .init(top: 4, left: 8, bottom: 4, right: 8))
     

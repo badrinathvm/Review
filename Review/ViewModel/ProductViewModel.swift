@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 //protocol ProductViewModel {
 //    var productId: String { get }
@@ -60,10 +61,18 @@ extension ProductViewModel {
     }
     
     
-    public func configure(_ view: ProductViewCell) {
+    public func configure(_ view: ProductTableViewCell) {
         view.name.text = name
         view.price.text = price
         view.productImage.loadImage(url: thumbnailUrl!)
+        
+        guard let favFlag = product.fav else  { return }
+        if favFlag {
+            view.favImg.image = UIImage(named: "filled.png")
+        }else{
+            view.favImg.image = UIImage(named: "outline.png")
+        }
     }
+
 }
 

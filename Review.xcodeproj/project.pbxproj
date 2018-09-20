@@ -25,7 +25,7 @@
 		05862744214D741E0054E228 /* ReviewUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05862743214D741E0054E228 /* ReviewUITests.swift */; };
 		05862753214D74AB0054E228 /* ProductListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05862752214D74AB0054E228 /* ProductListViewController.swift */; };
 		05862756214D76A60054E228 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05862755214D76A60054E228 /* Extensions.swift */; };
-		05862759214D78410054E228 /* ProductViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05862758214D78410054E228 /* ProductViewCell.swift */; };
+		05862759214D78410054E228 /* ProductTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05862758214D78410054E228 /* ProductTableViewCell.swift */; };
 		0586275C214D795D0054E228 /* Product.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0586275B214D795D0054E228 /* Product.swift */; };
 		0586275F214D7B2E0054E228 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0586275E214D7B2E0054E228 /* API.swift */; };
 		05862761214D86780054E228 /* ProductDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05862760214D86780054E228 /* ProductDetailViewController.swift */; };
@@ -35,6 +35,7 @@
 		0586276A214DA24A0054E228 /* filter.png in Resources */ = {isa = PBXBuildFile; fileRef = 05862769214DA24A0054E228 /* filter.png */; };
 		3F7F345E798884EED7E20C23 /* Pods_JuulUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F31F8978FCEB38BC0AC04F5A /* Pods_JuulUITests.framework */; };
 		7862DDF20CF02AA02D0C24EF /* Pods_JuulTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6449CCACF8729AC9FB71D28 /* Pods_JuulTests.framework */; };
+		B858D9F021532D0500F8CA45 /* PersistenceHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B858D9EF21532D0500F8CA45 /* PersistenceHelper.swift */; };
 		DD75D385F81B53F912D53C8E /* Pods_ReviewUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D4A43713D620ED095767465C /* Pods_ReviewUITests.framework */; };
 		F5F8722E2606E0925B5A2E85 /* Pods_ReviewTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E64FD1BC69102A0D03E8007 /* Pods_ReviewTests.framework */; };
 /* End PBXBuildFile section */
@@ -81,7 +82,7 @@
 		05862745214D741E0054E228 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		05862752214D74AB0054E228 /* ProductListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListViewController.swift; sourceTree = "<group>"; };
 		05862755214D76A60054E228 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
-		05862758214D78410054E228 /* ProductViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductViewCell.swift; sourceTree = "<group>"; };
+		05862758214D78410054E228 /* ProductTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductTableViewCell.swift; sourceTree = "<group>"; };
 		0586275B214D795D0054E228 /* Product.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Product.swift; sourceTree = "<group>"; };
 		0586275E214D7B2E0054E228 /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		05862760214D86780054E228 /* ProductDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailViewController.swift; sourceTree = "<group>"; };
@@ -96,6 +97,7 @@
 		93E2C54352E360F4F2EE86F9 /* Pods-ReviewUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ReviewUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-ReviewUITests/Pods-ReviewUITests.release.xcconfig"; sourceTree = "<group>"; };
 		95B9CDD8D53C834CE2DA099B /* Pods_Juul.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Juul.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B52CDA542D0F39A495DE0BC1 /* Pods-ReviewTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ReviewTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ReviewTests/Pods-ReviewTests.debug.xcconfig"; sourceTree = "<group>"; };
+		B858D9EF21532D0500F8CA45 /* PersistenceHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceHelper.swift; sourceTree = "<group>"; };
 		D4A43713D620ED095767465C /* Pods_ReviewUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ReviewUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6449CCACF8729AC9FB71D28 /* Pods_JuulTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_JuulTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F31F8978FCEB38BC0AC04F5A /* Pods_JuulUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_JuulUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -241,6 +243,7 @@
 			isa = PBXGroup;
 			children = (
 				05862755214D76A60054E228 /* Extensions.swift */,
+				B858D9EF21532D0500F8CA45 /* PersistenceHelper.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -248,7 +251,7 @@
 		05862757214D774B0054E228 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				05862758214D78410054E228 /* ProductViewCell.swift */,
+				05862758214D78410054E228 /* ProductTableViewCell.swift */,
 				05862762214D889B0054E228 /* ProductDetailView.swift */,
 			);
 			path = View;
@@ -529,8 +532,9 @@
 				05392FA12152AAB700877FFD /* DynamicValue.swift in Sources */,
 				05862753214D74AB0054E228 /* ProductListViewController.swift in Sources */,
 				05862724214D741A0054E228 /* AppDelegate.swift in Sources */,
-				05862759214D78410054E228 /* ProductViewCell.swift in Sources */,
+				05862759214D78410054E228 /* ProductTableViewCell.swift in Sources */,
 				05392FAF2152C22500877FFD /* Result.swift in Sources */,
+				B858D9F021532D0500F8CA45 /* PersistenceHelper.swift in Sources */,
 				05392F9F215210FE00877FFD /* ProductViewModel.swift in Sources */,
 				05392FAC2152C22500877FFD /* RequestHandler.swift in Sources */,
 				05862756214D76A60054E228 /* Extensions.swift in Sources */,

@@ -11,12 +11,26 @@ import UIKit
 class ProductListViewController: UIViewController {
 
     fileprivate let cellIdentifier = "productCell"
-    var tableView: UITableView = UITableView()
+
     var productData:[Product] = []
     
     var filterOrDisable:UIBarButtonItem?
-    
     let defaults = UserDefaults.standard
+    
+    lazy var tableView: UITableView = { [unowned self] in
+        let tableView = UITableView()
+        tableView.register(ProductTableViewCell.self, forCellReuseIdentifier: cellIdentifier)
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.dataSource = self
+        tableView.delegate = self
+        return tableView
+    }()
+    
+    lazy var persistenceHelper: PersistenceHelper = { [unowned self] in
+        let persistenceHelper = PersistenceHelper()
+        persistenceHelper.delegate = self
+        return persistenceHelper
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,27 +64,13 @@ extension ProductListViewController : UITableViewDelegate, UITableViewDataSource
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-      
-        let cell = ProductViewCell(style: UITableViewCell.CellStyle.default, reuseIdentifier: cellIdentifier)
-        
-        let productViewModel = ProductViewModel(product: productData[indexPath.row])
-        productViewModel.configure(cell)
-        
-        //cell.product = productData[indexPath.row]
-        
-        //MARK : Handling fav image updates.
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(ProductListViewController.favTapped(_:)))
-        cell.favImg.isUserInteractionEnabled = true
-        cell.favImg.tag = indexPath.row
-        cell.favImg.addGestureRecognizer(tapGestureRecognizer)
-        cell.tag = indexPath.row
 
-        guard let favFlag = productData[indexPath.row].fav else  { return UITableViewCell() }
-        if favFlag {
-            cell.favImg.image = UIImage(named: "filled.png")
-        }else{
-            cell.favImg.image = UIImage(named: "outline.png")
-        }
+        let cell = ProductTableViewCell(style: UITableViewCell.CellStyle.default, reuseIdentifier: cellIdentifier)
+        cell.delegate = self
+        
+       let productViewModel = ProductViewModel(product: productData[indexPath.row])
+       productViewModel.configure(cell)
+        
         return cell
     }
     
@@ -87,49 +87,45 @@ extension ProductListViewController : UITableViewDelegate, UITableViewDataSource
 }
 
 //MARK : NSUserDefaults updates and fav img updates.
-
-extension ProductListViewController {
+extension ProductListViewController: PersistenceDelegate {
     
-    @objc func favTapped(_ sender:AnyObject ) {
-        
-        let tapLocation = sender.location(in: tableView)
-        
-        //using the tapLocation to retrieve the index path
-        let indexPath = self.tableView.indexPathForRow(at: tapLocation)
-        
-        let favCell = self.tableView.cellForRow(at: indexPath!) as? ProductViewCell
-        
-        let productList = getProductList()
-        
-        guard let productFav = productList[sender.view.tag].fav else { return }
-        
-        if productFav {
-            favCell?.favImg.image = UIImage(named: "outline.png")
-            productList[sender.view.tag].fav = false
-            updateData(productList: productList)
-        }else{
-            favCell?.favImg.image = UIImage(named: "filled.png")
-            productList[sender.view.tag].fav = true
-            updateData(productList: productList)
-        }
+    //MARK : this methos updates the product List
+    func updateCache(productList: [Product]) {
+        let data = NSKeyedArchiver.archivedData(withRootObject: productList)
+        self.defaults.set(data, forKey: "starred")
     }
     
-    //MARK : Retunr the productList
-    
+    //MARK : Return the productList
     func getProductList ()  -> [Product] {
         
-        guard let data = defaults.object(forKey: "starred") as? NSData else { return []}
+        guard let data = defaults.object(forKey: "starred") as? NSData else { return [] }
         
         guard let productList = NSKeyedUnarchiver.unarchiveObject(with: data as Data) as? [Product] else  { return [] }
         
         return productList
     }
+}
+
+
+extension ProductListViewController: ProductTableViewCellDelegate {
     
-    //MARK : this methos updates the product List
-    
-    func updateData(productList: [Product]) {
-        let data = NSKeyedArchiver.archivedData(withRootObject: productList)
-        self.defaults.set(data, forKey: "starred")
+    func didTapFav(_ sender: ProductTableViewCell) {
+        
+        guard let tappedIndexPath = tableView.indexPath(for: sender) else { return }
+        let index = tappedIndexPath.row
+        let favCell = self.tableView.cellForRow(at: tappedIndexPath) as? ProductTableViewCell
+        let productList = getProductList()
+        guard let productFav = productList[index].fav else { return }
+        
+        if productFav {
+            favCell?.favImg.image = UIImage(named: "outline.png")
+            productList[index].fav = false
+        }else{
+            favCell?.favImg.image = UIImage(named: "filled.png")
+            productList[index].fav = true
+        }
+        
+        persistenceHelper.updateCache(for: productList)
     }
 }
 
@@ -139,12 +135,6 @@ extension ProductListViewController {
 extension ProductListViewController {
     
     func setupTableView() {
-        
-        tableView.dataSource = self
-        tableView.delegate = self
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-        
-        tableView.register(ProductViewCell.self, forCellReuseIdentifier: cellIdentifier)
         
         self.view.addSubview(tableView)
         
@@ -171,7 +161,7 @@ extension ProductListViewController {
             filterOrDisable?.title = "Disable"
             
             //filters the product only with favourited
-            productData = productList.filter{ $0.fav == true }
+            self.productData = productList.filter{ $0.fav == true }
         }else {
             filterOrDisable?.title = "Filter"
             //assigns all the products when disabled to show all of them
