@@ -50,3 +50,15 @@ class Product : NSObject , NSCoding{
     }
     
 }
+
+class ProductModal : NSObject {
+    
+    @objc dynamic var productData:[Product]  = []
+    
+//    var prodData: [Product]? {
+//        didSet{
+//            self.addObserver(self, forKeyPath: "kvoKey", options: .new, context: nil)
+//            self.productData = prodData!
+//        }
+//    }
+}

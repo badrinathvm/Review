@@ -14,6 +14,8 @@ class ProductListViewController: UIViewController {
 
     var productData:[Product] = []
     
+    let productModal = ProductModal()
+    
     lazy var filterOrDisable: UIBarButtonItem = { [unowned self] in
         let barButton = UIBarButtonItem(title: "Filter", style: .plain, target: self, action: #selector(filterTapped))
         return barButton
@@ -34,6 +36,8 @@ class ProductListViewController: UIViewController {
         return persistenceHelper
     }()
     
+    var observers = [NSKeyValueObservation]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -41,19 +45,20 @@ class ProductListViewController: UIViewController {
         
         setupNavItems()
         
+        //Observe the model for the changes.
+        observeModel()
+        
         API.getProductData { (result) in
             
             //Assign the result , if products are not available in NSUserDefaults
             guard let _ = self.persistenceHelper.defaults.object(forKey: "starred") as? NSData else {
-                self.productData = result
-                self.persistenceHelper.updateUserDefaults(for: self.productData)
-                self.tableView.reloadData()
+                self.productModal.productData = result
+                self.persistenceHelper.updateUserDefaults(for: self.productModal.productData)
                 return
             }
             
              //if products are available in NSUSerDefaults, assing it to the productData Array to populate
-            self.productData = self.persistenceHelper.fetchProductsFromCache()
-            self.tableView.reloadData()
+            self.productModal.productData = self.persistenceHelper.fetchProductsFromCache()
         }
     }
 }
@@ -61,7 +66,7 @@ class ProductListViewController: UIViewController {
 extension ProductListViewController : UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return productData.count
+        return productModal.productData.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -69,7 +74,7 @@ extension ProductListViewController : UITableViewDelegate, UITableViewDataSource
         let cell = ProductTableViewCell(style: UITableViewCell.CellStyle.default, reuseIdentifier: cellIdentifier)
         cell.delegate = self
         
-       let productViewModel = ProductViewModel(product: productData[indexPath.row])
+       let productViewModel = ProductViewModel(product: productModal.productData[indexPath.row])
        productViewModel.configure(cell)
         
         return cell
@@ -148,20 +153,21 @@ extension ProductListViewController {
     }
     
     @objc func filterTapped() {
-        
         let productList = persistenceHelper.fetchProductsFromCache()
-        
         if filterOrDisable.title == "Filter" {
             filterOrDisable.title = "Disable"
-            
-            //filters the product only with favourited
-            self.productData = productList.filter{ $0.fav == true }
+            self.productModal.productData = productList.filter{ $0.fav == true }
         }else {
             filterOrDisable.title = "Filter"
-            //assigns all the products when disabled to show all of them
-            self.productData = productList
+            self.productModal.productData = productList
         }
-        
-        self.tableView.reloadData()
+    }
+    
+    func observeModel() {
+        self.observers = [
+            productModal.observe(\.productData, options: [.new , .old]) { [weak self] (model, change) in
+                self?.tableView.reloadData()
+            }
+        ]
     }
 }

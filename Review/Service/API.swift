@@ -62,6 +62,7 @@ class API {
                 print(imageUrl)
                 
                 let product = Product(id: productId, name: name, desc: description, price: price, thumbailUrl: thumbailUrl, imageUrl: imageUrl)
+   
                 productModel.append(product)
 
            })

@@ -19,7 +19,7 @@ import UIKit
 //}
 
 class ProductViewModel {
-    
+        
     private let product: Product
     
     init(product: Product) {
