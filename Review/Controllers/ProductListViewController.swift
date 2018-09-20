@@ -14,7 +14,11 @@ class ProductListViewController: UIViewController {
 
     var productData:[Product] = []
     
-    let productModal = ProductModal()
+    lazy var productModal: ProductModal = { [unowned self] in
+       let modal = ProductModal()
+       modal.delegate = self
+       return modal
+    }()
     
     lazy var filterOrDisable: UIBarButtonItem = { [unowned self] in
         let barButton = UIBarButtonItem(title: "Filter", style: .plain, target: self, action: #selector(filterTapped))
@@ -36,7 +40,6 @@ class ProductListViewController: UIViewController {
         return persistenceHelper
     }()
     
-    var observers = [NSKeyValueObservation]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,7 +49,7 @@ class ProductListViewController: UIViewController {
         setupNavItems()
         
         //Observe the model for the changes.
-        observeModel()
+        //observeModel()
         
         API.getProductData { (result) in
             
@@ -129,6 +132,12 @@ extension ProductListViewController: ProductTableViewCellDelegate {
     }
 }
 
+extension ProductListViewController: ProductModalDelegate {
+    func reloadTableView() {
+        self.tableView.reloadData()
+    }
+}
+
 
 //MARK : UI updates and navigations
 
@@ -161,13 +170,5 @@ extension ProductListViewController {
             filterOrDisable.title = "Filter"
             self.productModal.productData = productList
         }
-    }
-    
-    func observeModel() {
-        self.observers = [
-            productModal.observe(\.productData, options: [.new , .old]) { [weak self] (model, change) in
-                self?.tableView.reloadData()
-            }
-        ]
     }
 }

@@ -36,6 +36,7 @@
 		3F7F345E798884EED7E20C23 /* Pods_JuulUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F31F8978FCEB38BC0AC04F5A /* Pods_JuulUITests.framework */; };
 		7862DDF20CF02AA02D0C24EF /* Pods_JuulTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6449CCACF8729AC9FB71D28 /* Pods_JuulTests.framework */; };
 		B858D9F021532D0500F8CA45 /* PersistenceHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B858D9EF21532D0500F8CA45 /* PersistenceHelper.swift */; };
+		B858DA2C2154545400F8CA45 /* ProductModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = B858DA2B2154545400F8CA45 /* ProductModal.swift */; };
 		DD75D385F81B53F912D53C8E /* Pods_ReviewUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D4A43713D620ED095767465C /* Pods_ReviewUITests.framework */; };
 		F5F8722E2606E0925B5A2E85 /* Pods_ReviewTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E64FD1BC69102A0D03E8007 /* Pods_ReviewTests.framework */; };
 /* End PBXBuildFile section */
@@ -98,6 +99,7 @@
 		95B9CDD8D53C834CE2DA099B /* Pods_Juul.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Juul.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B52CDA542D0F39A495DE0BC1 /* Pods-ReviewTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ReviewTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ReviewTests/Pods-ReviewTests.debug.xcconfig"; sourceTree = "<group>"; };
 		B858D9EF21532D0500F8CA45 /* PersistenceHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceHelper.swift; sourceTree = "<group>"; };
+		B858DA2B2154545400F8CA45 /* ProductModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductModal.swift; sourceTree = "<group>"; };
 		D4A43713D620ED095767465C /* Pods_ReviewUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ReviewUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6449CCACF8729AC9FB71D28 /* Pods_JuulTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_JuulTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F31F8978FCEB38BC0AC04F5A /* Pods_JuulUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_JuulUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -262,6 +264,7 @@
 			children = (
 				0586275B214D795D0054E228 /* Product.swift */,
 				05392FA02152AAB700877FFD /* DynamicValue.swift */,
+				B858DA2B2154545400F8CA45 /* ProductModal.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -540,6 +543,7 @@
 				05862756214D76A60054E228 /* Extensions.swift in Sources */,
 				05862761214D86780054E228 /* ProductDetailViewController.swift in Sources */,
 				05392FB02152C22500877FFD /* ErrorResult.swift in Sources */,
+				B858DA2C2154545400F8CA45 /* ProductModal.swift in Sources */,
 				05392FAD2152C22500877FFD /* RequestFactory.swift in Sources */,
 				05392FAE2152C22500877FFD /* ParserHelper.swift in Sources */,
 				0586275C214D795D0054E228 /* Product.swift in Sources */,
