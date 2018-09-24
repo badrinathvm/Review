@@ -9,8 +9,8 @@
 import UIKit
 
 class ProductDetailViewController: UIViewController {
-    
-    var product: Product?
+        
+    var productViewModel: ProductViewModel?
     
     lazy var productView:ProductDetailView = {
         var productView = ProductDetailView()
@@ -20,9 +20,7 @@ class ProductDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let productViewModel = ProductViewModel(product: product!)
-        
-        productViewModel.configure(productView)
+        productViewModel?.configure(productView)
         
         self.view.addSubview(productView)
     }

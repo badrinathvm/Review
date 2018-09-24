@@ -79,3 +79,9 @@ extension UIImageView{
     }
 }
 
+
+extension Notification.Name {
+    static let filterOrDisable = Notification.Name("FilterDisable")
+    static let reloadTableView = Notification.Name("ReloadTableView")
+}
+

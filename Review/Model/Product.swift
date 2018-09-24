@@ -48,5 +48,26 @@ class Product : NSObject , NSCoding{
         aCoder.encode(self.imageUrl, forKey: "imageUrl")
         aCoder.encode(self.fav, forKey: "fav")
     }
-    
 }
+
+
+
+
+//extension Product : Parceable {
+//
+//    static func parseObject(dictionary: [String : AnyObject]) -> Result<Products, ErrorResult> {
+//        guard let productId = dictionary["id"] as? String,
+//            let name = dictionary["name"] as? String,
+//            let description = dictionary["description"] as? String,
+//            let price = dictionary["price"] as? Double,
+//            let thumbailUrl = dictionary["thumbnail_url"] as? String,
+//            let imageUrl = dictionary["image_url"] as? String
+//            else{
+//                print("Failed to extract Product Data")
+//                 return Result.failure(ErrorResult.parser(string: "Unable to parse conversion rate"))
+//        }
+//
+//        let products = Product(id: productId, name: name, desc: description, price: price, thumbailUrl: thumbailUrl, imageUrl: imageUrl,fav: false)
+//         return Result.success(products)
+//    }
+//}

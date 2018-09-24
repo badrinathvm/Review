@@ -28,7 +28,8 @@ class ProductModal : NSObject {
     func observeModel() {
         self.observers = [
             self.observe(\.productData, options: [.new , .old]) { [weak self] (model, change) in
-                self?.delegate?.reloadTableView()
+                guard let self = self else { return }
+                self.delegate?.reloadTableView()
             }
         ]
     }
@@ -40,7 +41,7 @@ class ProductModal : NSObject {
         self.productData = persistence.fetchProductsFromCache()
         
         if self.productData.count  == 0  {
-            API.getProductData { (result) in
+            API().getProductData { (result) in
                 //Assign the result , if products are not available in NSUserDefaults
                 guard let _ = persistence.defaults.object(forKey: "starred") as? NSData else {
                     self.productData = result
@@ -49,5 +50,26 @@ class ProductModal : NSObject {
                 }
             }
         }
+    }
+    
+    
+    func fetchProductDataToModelView() -> [Product] {
+        
+        //if products are available in NSUSerDefaults, assing it to the productData Array to populate
+        let persistence = PersistenceHelper.shared
+        self.productData = persistence.fetchProductsFromCache()
+        
+        if self.productData.count  == 0  {
+            API().getProductData { (result) in
+                //Assign the result , if products are not available in NSUserDefaults
+                guard let _ = persistence.defaults.object(forKey: "starred") as? NSData else {
+                    self.productData = result
+                    persistence.updateUserDefaults(for: self.productData)
+                    return
+                }
+            }
+        }
+        
+        return productData
     }
 }

@@ -11,11 +11,11 @@ import Alamofire
 
 class API {
     
-    static var productModel:[Product] = []
+    var productModel:[Product] = []
     
     static let endPoint = "https://s3.us-east-2.amazonaws.com/juul-coding-challenge/products.json"
     
-    static func getProductData(completion: @escaping([Product]) -> () ) {
+    func getProductData(completion: @escaping([Product]) -> () ) {
         
         Alamofire.request(API.endPoint,method: .get,parameters: nil,encoding: JSONEncoding.default,headers: nil).responseJSON { response in
             
@@ -63,14 +63,13 @@ class API {
                 
                 let product = Product(id: productId, name: name, desc: description, price: price, thumbailUrl: thumbailUrl, imageUrl: imageUrl)
    
-                productModel.append(product)
+                self.productModel.append(product)
 
            })
             
-            print("Product Mode Data is \(productModel)")
-            completion(productModel)
+            print("Product Mode Data is \(self.productModel)")
+            completion(self.productModel)
         }
-        
     }
 }
 

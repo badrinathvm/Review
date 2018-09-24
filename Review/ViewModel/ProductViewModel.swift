@@ -9,19 +9,64 @@
 import Foundation
 import UIKit
 
-//protocol ProductViewModel {
-//    var productId: String { get }
-//    var name: String { get }
-//    var desc: String { get }
-//    var price: Double { get }
-//    var thumbnailUrl : String { get }
-//    var imageUrl: String { get }
-//}
+class Dynamic<T> {
+    
+    typealias Listener = (T) -> Void
+    var listener: Listener?
+    
+    //Most of the times we need to bind and fire the event
+    func bind(listener: Listener?){
+        self.listener = listener
+        listener?(value!)
+    }
+    
+    //We need to set the callback that fire event
+    var value: T?{
+        didSet{
+            guard let _value  = value else { return }
+            listener?(_value)
+        }
+    }
+    
+    init(_ v: T) {
+        value = v
+    }
+}
+
+class ProductListViewModel {
+    
+   var productViewModels = [ProductViewModel]()
+    
+    private var dataAccess: API
+    private var completion : () -> () = { }
+    
+    lazy var productModal: ProductModal = { [unowned self] in
+        let modal = ProductModal()
+        return modal
+    }()
+    
+    init(dataAccess: API, completion : @escaping () -> ()) {
+        self.dataAccess = dataAccess
+        self.completion = completion
+        populateProducts()
+    }
+    
+    func populateProducts() {
+       let products = productModal.fetchProductDataToModelView()
+       self.productViewModels = products.compactMap { (product) in
+            return ProductViewModel(product: product)
+        }
+    }
+    
+    func productAt(index: Int) -> ProductViewModel {
+        return self.productViewModels[index]
+    }
+}
 
 class ProductViewModel {
-        
-    private let product: Product
     
+    private let product: Product
+
     init(product: Product) {
         self.product = product
     }
@@ -60,7 +105,6 @@ extension ProductViewModel {
       view.productImage.loadImage(url: imageUrl!)
     }
     
-    
     public func configure(_ view: ProductTableViewCell) {
         view.name.text = name
         view.price.text = price
@@ -73,6 +117,5 @@ extension ProductViewModel {
             view.favImg.image = UIImage(named: "outline.png")
         }
     }
-
 }
 
