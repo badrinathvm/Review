@@ -116,16 +116,11 @@ extension ProductListViewController: UITableViewDelegate {
     }
 
     func navigateToProductDetails() {
-        guard let productDetailsVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ProductDetailViewController") as? ProductDetailViewController else { return }
+        guard let indexPath = self.tableView.indexPathForSelectedRow,
+            let viewModel = self.productListViewModel?.productAt(index: indexPath.row) else  { return }
         
-        guard let indexPath = self.tableView.indexPathForSelectedRow else  {
-            return
-        }
-        
-        let productViewModel = self.productListViewModel?.productAt(index: indexPath.row)
-        productDetailsVC.productViewModel = productViewModel
-        self.navigationController?.navigationBar.backItem?.title = NSLocalizedString("Product Details", comment: "Product Details ")
-        self.navigationController?.pushViewController(productDetailsVC, animated: true)
+        //Adopted light weight View Controllers to smoothen the navigation.
+        ProductDetailPresenter(viewModel: viewModel).present(in: self)
     }
 }
 

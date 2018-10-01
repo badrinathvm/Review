@@ -41,6 +41,7 @@
 		7862DDF20CF02AA02D0C24EF /* Pods_JuulTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6449CCACF8729AC9FB71D28 /* Pods_JuulTests.framework */; };
 		B858D9F021532D0500F8CA45 /* PersistenceHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B858D9EF21532D0500F8CA45 /* PersistenceHelper.swift */; };
 		B858DA2C2154545400F8CA45 /* ProductModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = B858DA2B2154545400F8CA45 /* ProductModal.swift */; };
+		B8F00E8221629EE900A8E2F5 /* ProductDetailPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8F00E8121629EE900A8E2F5 /* ProductDetailPresenter.swift */; };
 		DD75D385F81B53F912D53C8E /* Pods_ReviewUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D4A43713D620ED095767465C /* Pods_ReviewUITests.framework */; };
 		F5F8722E2606E0925B5A2E85 /* Pods_ReviewTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E64FD1BC69102A0D03E8007 /* Pods_ReviewTests.framework */; };
 /* End PBXBuildFile section */
@@ -108,6 +109,7 @@
 		B52CDA542D0F39A495DE0BC1 /* Pods-ReviewTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ReviewTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ReviewTests/Pods-ReviewTests.debug.xcconfig"; sourceTree = "<group>"; };
 		B858D9EF21532D0500F8CA45 /* PersistenceHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceHelper.swift; sourceTree = "<group>"; };
 		B858DA2B2154545400F8CA45 /* ProductModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductModal.swift; sourceTree = "<group>"; };
+		B8F00E8121629EE900A8E2F5 /* ProductDetailPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailPresenter.swift; sourceTree = "<group>"; };
 		D4A43713D620ED095767465C /* Pods_ReviewUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ReviewUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6449CCACF8729AC9FB71D28 /* Pods_JuulTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_JuulTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F31F8978FCEB38BC0AC04F5A /* Pods_JuulUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_JuulUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -207,6 +209,7 @@
 		05862722214D741A0054E228 /* Review */ = {
 			isa = PBXGroup;
 			children = (
+				B8F00E7F21629E9100A8E2F5 /* Routing */,
 				05392F9D215210DE00877FFD /* ViewModel */,
 				05862764214D92FF0054E228 /* Resources */,
 				0586275D214D7B200054E228 /* Service */,
@@ -313,6 +316,22 @@
 				93E2C54352E360F4F2EE86F9 /* Pods-ReviewUITests.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		B8F00E7F21629E9100A8E2F5 /* Routing */ = {
+			isa = PBXGroup;
+			children = (
+				B8F00E8021629EA000A8E2F5 /* presenters */,
+			);
+			path = Routing;
+			sourceTree = "<group>";
+		};
+		B8F00E8021629EA000A8E2F5 /* presenters */ = {
+			isa = PBXGroup;
+			children = (
+				B8F00E8121629EE900A8E2F5 /* ProductDetailPresenter.swift */,
+			);
+			path = presenters;
 			sourceTree = "<group>";
 		};
 		C77C6BC1B4CDD5224B1F9199 /* Frameworks */ = {
@@ -561,6 +580,7 @@
 				B858DA2C2154545400F8CA45 /* ProductModal.swift in Sources */,
 				05392FAD2152C22500877FFD /* RequestFactory.swift in Sources */,
 				05392FAE2152C22500877FFD /* ParserHelper.swift in Sources */,
+				B8F00E8221629EE900A8E2F5 /* ProductDetailPresenter.swift in Sources */,
 				05392FB921561A8000877FFD /* Reachability.swift in Sources */,
 				0586275C214D795D0054E228 /* Product.swift in Sources */,
 				0586275F214D7B2E0054E228 /* API.swift in Sources */,
