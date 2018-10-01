@@ -10,7 +10,16 @@ import UIKit
 
 class ProductDetailViewController: UIViewController {
         
-    var productViewModel: ProductViewModel?
+    var viewModel: ProductViewModel
+    
+    init(viewModel : ProductViewModel){
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     lazy var productView:ProductDetailView = {
         var productView = ProductDetailView()
@@ -19,8 +28,9 @@ class ProductDetailViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.view.backgroundColor = .white
         
-        productViewModel?.configure(productView)
+        viewModel.configure(productView)
         
         self.view.addSubview(productView)
     }
