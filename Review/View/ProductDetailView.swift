@@ -10,6 +10,29 @@ import UIKit
 
 class ProductDetailView: UIView {
     
+    var viewModel:ProductViewModel?
+    
+    init(viewModel : ProductViewModel){
+
+        self.viewModel = viewModel
+        super.init(frame: .zero)
+        
+        [productImage, name,price,descText].forEach  {
+            addSubview($0)
+        }
+            
+        setupConstraints()
+    }
+    
+    let stackView: UIStackView = {
+       let stackView = UIStackView()
+       stackView.translatesAutoresizingMaskIntoConstraints = false
+       stackView.axis = .vertical
+       stackView.alignment = .fill
+       stackView.spacing = 0
+       return stackView
+    }()
+    
     let productImage:UIImageView = {
         let img = UIImageView()
         img.contentMode = .scaleAspectFill
@@ -21,8 +44,9 @@ class ProductDetailView: UIView {
     let name: UILabel = {
         var name = UILabel()
         name.textColor = UIColor.gray
-        name.font = UIFont.boldSystemFont(ofSize: 20)
+        name.font = UIFont.boldSystemFont(ofSize: 16)
         name.translatesAutoresizingMaskIntoConstraints = false
+        name.numberOfLines = 2
         return name
     }()
     
@@ -30,12 +54,12 @@ class ProductDetailView: UIView {
         var position = UILabel()
         position.textColor = UIColor.gray
         position.translatesAutoresizingMaskIntoConstraints = false
-        position.font = UIFont.boldSystemFont(ofSize: 15)
+        position.font = UIFont.boldSystemFont(ofSize: 14)
         return position
     }()
     
     let descText : UITextView = {
-        var desc = UITextView(frame: CGRect(x: 15, y: 380, width: UIScreen.main.bounds.width - 20, height: 40))
+        var desc = UITextView()
         desc.textColor = UIColor.gray
         desc.translatesAutoresizingMaskIntoConstraints = false
         desc.font = UIFont.boldSystemFont(ofSize: 15)
@@ -46,35 +70,32 @@ class ProductDetailView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    init(){
-        super.init(frame: .zero)
-    
-        [productImage,name,price,descText].forEach  {
-            addSubview($0)
-        }
-        
-//        guard let product = product,
-//            let price = product.price,
-//            let imageUrl = product.imageUrl else { return }
-//        
-//        self.name.text = product.name
-//        self.price.text = "$\(price/100)"
-//        self.descText.text = product.desc
-//        self.productImage.loadImage(url: imageUrl)
-        
-        setupConstraints()
-    }
-    
     func setupConstraints() {
+        
+       NSLayoutConstraint.activate([
+            productImage.centerXAnchor.constraint(equalTo: centerXAnchor),
+            productImage.topAnchor.constraint(equalTo: topAnchor, constant: 50)
+        ])
 
-        productImage.anchor(top: topAnchor, leading: leadingAnchor, bottom: nil, trailing: nil,padding: .init(top: 65, left: UIScreen.main.bounds.width/5, bottom: 0, right: 0), size: .init(width: 0, height: 330))
-          productImage.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
-        
-        name.anchor(top: productImage.topAnchor, leading: leadingAnchor, bottom: nil, trailing: trailingAnchor, padding: .init(top: 250, left: 20, bottom: 0, right: 10),
-                    size: .init(width: UIScreen.main.bounds.width - 20, height: 40))
-        
-        price.anchor(top: name.topAnchor, leading: leadingAnchor, bottom:nil, trailing: trailingAnchor, padding: .init(top: 30, left: 20, bottom: 0, right: 10),  size: .init(width: UIScreen.main.bounds.width - 20, height: 40))
-        
+      NSLayoutConstraint.activate([
+            name.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
+            name.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
+            name.heightAnchor.constraint(equalToConstant: 25),
+            name.topAnchor.constraint(equalTo: productImage.bottomAnchor, constant: 16)
+      ])
+
+     NSLayoutConstraint.activate([
+            price.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
+            price.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10),
+            price.topAnchor.constraint(equalTo: name.bottomAnchor, constant: 10),
+            price.heightAnchor.constraint(equalToConstant: 25)
+        ])
+
+    NSLayoutConstraint.activate([
+            descText.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
+            descText.topAnchor.constraint(equalTo: price.bottomAnchor, constant: 10),
+            descText.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
+            descText.heightAnchor.constraint(equalToConstant: 150),
+        ])
     }
-    
 }

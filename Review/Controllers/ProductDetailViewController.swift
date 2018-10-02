@@ -21,17 +21,35 @@ class ProductDetailViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    lazy var productView:ProductDetailView = {
-        var productView = ProductDetailView()
+    lazy var productDetaiView:ProductDetailView = {
+        var productView = ProductDetailView(viewModel: viewModel)
+        productView.backgroundColor = .white
+        productView.translatesAutoresizingMaskIntoConstraints = false
         return productView
+    }()
+    
+    let stackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .vertical
+        stackView.alignment = .fill
+        stackView.spacing = 0
+        return stackView
     }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
         
-        viewModel.configure(productView)
+        self.view.addSubview(productDetaiView)
         
-        self.view.addSubview(productView)
+        NSLayoutConstraint.activate([
+            productDetaiView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            productDetaiView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            productDetaiView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            productDetaiView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+        ])
+        
+        viewModel.configure(productDetaiView)
     }
 }

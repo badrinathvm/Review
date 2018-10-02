@@ -76,7 +76,13 @@ class ProductViewModel {
     }
     
     var name: String? {
-        return product.name
+        get {
+            return product.name
+        }
+        set {
+           product.name = newValue
+        }
+      
     }
     
     var desc: String? {
