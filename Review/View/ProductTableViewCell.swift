@@ -89,6 +89,14 @@ class ProductTableViewCell : UITableViewCell {
         return view
     }()
     
+    let stackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .vertical
+        stackView.alignment = .fill
+        stackView.spacing = 5
+        return stackView
+    }()
     
     var produtListViewController: ProductListViewController?
     
@@ -99,22 +107,46 @@ class ProductTableViewCell : UITableViewCell {
     func setup() {
         addSubview(containerView)
         
-        [productImage,name,price,favImg ].forEach {
+        containerView.addSubview(stackView)
+        
+        [name,price ].forEach {
+            stackView.addArrangedSubview($0)
+        }
+        
+        [productImage,favImg ].forEach {
             containerView.addSubview($0)
         }
         
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(favTapped))
         favImg.addGestureRecognizer(tapGestureRecognizer)
         
-        containerView.anchor(top: topAnchor, leading: leadingAnchor, bottom: bottomAnchor, trailing: trailingAnchor,padding: .init(top: 4, left: 8, bottom: 4, right: 8))
-    
-        productImage.anchor(top: nil, leading: leadingAnchor, bottom: nil, trailing: nil,padding: .init(top: 0, left: 8, bottom: 0, right: 0), size: .init(width: 70, height:  70))
-        productImage.centerYAnchor.constraint(equalTo: containerView.centerYAnchor).isActive = true
+        NSLayoutConstraint.activate([
+            containerView.topAnchor.constraint(equalTo: topAnchor, constant: 4),
+            containerView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8),
+            //containerView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -4),
+            containerView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8),
+            
+            //stack View
+            stackView.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 4),
+            stackView.leadingAnchor.constraint(equalTo: productImage.trailingAnchor, constant: 4),
+            stackView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -50),
+            stackView.heightAnchor.constraint(equalToConstant: 70),
+            name.heightAnchor.constraint(equalToConstant: 35),
+            //price.heightAnchor.constraint(equalToConstant: 35), //the above name onbe covers proce height constraint.
+            
+            //product Image
+            productImage.widthAnchor.constraint(equalToConstant: 70),
+            productImage.heightAnchor.constraint(equalToConstant: 70),
+            productImage.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 4),
+            productImage.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -4),
+            productImage.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 4),
+            
+            //fav image
+            favImg.widthAnchor.constraint(equalToConstant: 30),
+            favImg.heightAnchor.constraint(equalToConstant: 30),
+            favImg.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -10),
+            favImg.topAnchor.constraint(equalTo: topAnchor, constant: 30)
+        ])
 
-        name.anchor(top: topAnchor, leading: productImage.trailingAnchor, bottom: nil, trailing: trailingAnchor, padding: .init(top: 15, left: 20, bottom: 0, right: 20), size: .init(width: 0, height: 40))
-
-        price.anchor(top: name.topAnchor, leading: productImage.trailingAnchor, bottom: nil, trailing: trailingAnchor, padding:.init(top: 25, left: 20, bottom: 0, right: 20), size: .init(width: 0, height: 40))
-        
-        favImg.anchor(top: topAnchor, leading: nil, bottom: nil, trailing: trailingAnchor, padding: .init(top: 30, left: 0, bottom: 0, right: 10),size: .init(width: 30, height:  30))
     }
 }
