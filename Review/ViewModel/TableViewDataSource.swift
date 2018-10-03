@@ -22,7 +22,6 @@ class TableViewDataSource<Cell :UITableViewCell,ViewModel> : NSObject, UITableVi
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        
         guard let identifier = cellIdentifier else { return UITableViewCell() }
         
         guard let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as? Cell else  { return UITableViewCell() }

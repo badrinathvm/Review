@@ -52,24 +52,42 @@ class ProductModal : NSObject {
         }
     }
     
-    
-    func fetchProductDataToModelView() -> [Product] {
+    //older model to fetch data using parsing.
+    func fetchProductDataToModelView(done: @escaping ([Product]) -> () ){
         
         //if products are available in NSUSerDefaults, assing it to the productData Array to populate
         let persistence = PersistenceHelper.shared
         self.productData = persistence.fetchProductsFromCache()
         
         if self.productData.count  == 0  {
-            API().getProductData { (result) in
-                //Assign the result , if products are not available in NSUserDefaults
+//            API().getProductData { (result) in
+//                //Assign the result , if products are not available in NSUserDefaults
+//                guard let _ = persistence.defaults.object(forKey: "starred") as? NSData else {
+//                    self.productData = result
+//                    persistence.updateUserDefaults(for: self.productData)
+//                    return
+//                }
+//            }
+            self.dumpPodsToProduct { (products) in
                 guard let _ = persistence.defaults.object(forKey: "starred") as? NSData else {
-                    self.productData = result
+                    self.productData = products
                     persistence.updateUserDefaults(for: self.productData)
+                    done(self.productData)
                     return
                 }
             }
+        }else {
+            done(self.productData)
         }
+    }
+    
+    func dumpPodsToProduct(complete : @escaping([Product]) -> ()) {
         
-        return productData
+//        API().getData { pods in
+//            pods.pods.forEach { pod in
+//                self.productData.append(Product(id: pod.id, name: pod.name, desc: pod.description, price: Double(pod.price), thumbailUrl: pod.thumbnail_url, imageUrl: pod.image_url))
+//            }
+//            complete(self.productData)
+//        }
     }
 }

@@ -15,6 +15,25 @@ class API {
     
     static let endPoint = "https://s3.us-east-2.amazonaws.com/juul-coding-challenge/products.json"
     
+    func getData(completion: @escaping([Product]) -> ()) {
+        let url = URL(string: API.endPoint)
+        let dataTask = URLSession.shared.dataTask(with: url!) { (data, response, error) in
+            guard let data = data else { return }
+            do{
+                let pods = try JSONDecoder().decode(Pods.self, from: data)
+                pods.pods.forEach { pod in
+                    self.productModel.append(Product(id: pod.id, name: pod.name, desc: pod.description, price: Double(pod.price), thumbailUrl: pod.thumbnail_url, imageUrl: pod.image_url))
+                }
+                DispatchQueue.main.async {
+                     completion(self.productModel)
+                }
+            }catch let error {
+                print("Error is \(error.localizedDescription)")
+           }
+        }
+        dataTask.resume()
+    }
+    
     func getProductData(completion: @escaping([Product]) -> () ) {
         
         Alamofire.request(API.endPoint,method: .get,parameters: nil,encoding: JSONEncoding.default,headers: nil).responseJSON { response in

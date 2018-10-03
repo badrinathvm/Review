@@ -38,13 +38,19 @@ class ProductListViewController: UIViewController {
         return tableView
     }()
     
-    var productListViewModel: ProductListViewModel?
+    private var productListViewModel: ProductListViewModel?
 
-    fileprivate func setTableViewDataSource(productListViewModel: ProductListViewModel) -> TableViewDataSource<ProductTableViewCell, ProductViewModel> {
-        return TableViewDataSource(cellIdentifier: cellIdentifier, items: productListViewModel.productViewModels ) { (cell, vm) in
+    fileprivate func setTableViewDataSource(productViewModels: [ProductViewModel]) -> TableViewDataSource<ProductTableViewCell, ProductViewModel> {
+        return TableViewDataSource(cellIdentifier: cellIdentifier, items: productViewModels ) { (cell, vm) in
             cell.delegate = self
             vm.configure(cell)
         }
+    }
+    
+    fileprivate func commonOperations(_ productViewModel: [ProductViewModel]) {
+        self.dataSource = self.setTableViewDataSource(productViewModels: productViewModel)
+        self.tableView.dataSource = self.dataSource
+        self.tableView.reloadData()
     }
     
     override func viewDidLoad() {
@@ -57,46 +63,22 @@ class ProductListViewController: UIViewController {
         
         // Observe for the notification, and define the function that's called when the notification is received
         NotificationCenter.default.addObserver(self, selector: #selector(onNotification(notification:)), name: .filterOrDisable, object: nil)
-        
         NotificationCenter.default.addObserver(self, selector: #selector(reloadTableVie), name: .reloadTableView, object: nil)
-        
-        productListViewModel  = ProductListViewModel(dataAccess: dataAccess, completion: {
-             NotificationCenter.default.post(name: .reloadTableView, object: nil, userInfo:nil)
-        })
-
-        guard let viewModel = productListViewModel else { return }
-        
-        self.dataSource = setTableViewDataSource(productListViewModel: viewModel )
-        self.tableView.dataSource = dataSource
-    
-        //productModal.fetchProductData()
-    }
-    
-    @objc func reloadTableVie() {
-        self.tableView.reloadData()
-    }
-    
-    @objc func onNotification(notification:Notification) {
-        // `userInfo` contains the data you sent along with the notification
-        
-        guard let productList = notification.userInfo?["products"] as? [Product] else { return }
-        
-        if filterOrDisable.title == "Filter" {
-            filterOrDisable.title = "Disable"
-
-            self.productListViewModel?.productViewModels = productList.filter { $0.fav == true }.compactMap { (product) in
-                return ProductViewModel(product: product)
-            }
-        } else {
-            filterOrDisable.title = "Filter"
-            self.productListViewModel?.productViewModels = productList.compactMap { (product) in
-                return ProductViewModel(product: product)
+       
+        let productViewModels = PersistenceHelper.shared.fetchFromUserDefaults()
+        if productViewModels.count != 0 {
+            let productViewModel = productViewModels.map(ProductViewModel.init)
+            commonOperations(productViewModel)
+            self.productListViewModel = ProductListViewModel(viewModel: productViewModel)
+        }else {
+            self.productListViewModel  = ProductListViewModel(dataAccess: dataAccess) {
+                guard let viewModels = self.productListViewModel?.productViewModel else { return }
+//                self.dataSource = self.setTableViewDataSource(productViewModels: viewModels)
+//                self.tableView.dataSource = self.dataSource
+//                self.tableView.reloadData()
+                self.commonOperations(viewModels)
             }
         }
-    
-        self.dataSource = setTableViewDataSource(productListViewModel: productListViewModel!)
-        self.tableView.dataSource = self.dataSource
-        NotificationCenter.default.post(name: .reloadTableView, object: nil, userInfo:nil)
     }
     
     deinit {
@@ -130,6 +112,10 @@ extension ProductListViewController: ProductTableViewCellDelegate {
 
         guard let tappedIndexPath = tableView.indexPath(for: sender) else { return }
         let favCell = self.tableView.cellForRow(at: tappedIndexPath) as? ProductTableViewCell
+        
+//        guard let indexPath = self.tableView.indexPathForSelectedRow else { return }
+//        let favCell = self.tableView.cellForRow(at: indexPath) as? ProductTableViewCell
+        
         let productList = PersistenceHelper.shared.fetchProductsFromCache()
         let product = productList[tappedIndexPath.row]
         guard let productFav = product.fav else { return }
@@ -173,5 +159,49 @@ extension ProductListViewController {
         let productList = PersistenceHelper.shared.fetchProductsFromCache()
         
         NotificationCenter.default.post(name: .filterOrDisable, object: nil, userInfo:["products": productList])
+    }
+}
+
+
+//MARK : Notification related items
+
+extension ProductListViewController {
+    
+    @objc func reloadTableVie() {
+        self.tableView.reloadData()
+    }
+    
+    @objc func onNotification(notification:Notification) {
+        // `userInfo` contains the data you sent along with the notification
+        
+        guard let productList = notification.userInfo?["products"] as? [Product] else { return }
+        
+        if filterOrDisable.title == "Filter" {
+            filterOrDisable.title = "Disable"
+            
+            
+            let productViewModels = productList.filter { $0.fav == true }.compactMap { (product) in
+                return ProductViewModel(product: product)
+            }
+            
+            //updates the view model with favorites
+            self.productListViewModel?.updateViewModel(for: productViewModels)
+        
+        } else {
+            
+            filterOrDisable.title = "Filter"
+            
+            let productViewModels = productList.compactMap { (product) in
+               return ProductViewModel(product: product)
+            }
+            
+            self.productListViewModel?.updateViewModel(for: productViewModels)
+        }
+        
+//        self.dataSource = setTableViewDataSource(productViewModels: (productListViewModel?.productViewModel)!)
+//        self.tableView.dataSource = self.dataSource
+//        NotificationCenter.default.post(name: .reloadTableView, object: nil, userInfo:nil)
+         guard let viewModels = self.productListViewModel?.productViewModel else { return }
+         commonOperations(viewModels)
     }
 }
